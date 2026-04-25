@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import random
 from typing import Callable, Optional
 
@@ -621,7 +622,7 @@ class MainMenuView(NeonBaseView):
             self.on_action(action)
 
 
-def run() -> None:
+async def run() -> None:
     window = arcade.Window(
         width=WINDOW_WIDTH,
         height=WINDOW_HEIGHT,
@@ -636,4 +637,4 @@ def run() -> None:
 
 
 if __name__ == "__main__":
-    run()
+    asyncio.run(run())
