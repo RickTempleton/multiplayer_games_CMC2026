@@ -7,6 +7,49 @@ import shlex
 AVAILABLE_GAMES = ["Xand0", "quiz"]
 
 
+class Lobby:
+    """Игровое лобби."""
+
+    def __init__(self, lobby_id, game_name):
+        """Инициализация лобби."""
+        self.lobby_id = lobby_id
+        self.game_name = game_name
+        self.players = {}
+        self.messages = asyncio.Queue()
+
+    async def pop_message(self):
+        """Получить сообщение, предназначенное для лобби."""
+        pass
+
+    def push_message(self, message, group=None):
+        """Отправить сообщение всем или выбранным игрокам."""
+        pass
+
+    def get_list_nicks(self):
+        """Вернуть список ников игроков в лобби."""
+        pass
+
+    async def main_lobby(self):
+        """Логика лобби."""
+        pass
+
+
+class Xand0Lobby(Lobby):
+    """Лобби для игры Xand0."""
+
+    async def main_lobby(self):
+        """Логика главного лобби для Xand0."""
+        pass
+
+
+class QuizLobby(Lobby):
+    """Лобби для игры quiz."""
+
+    async def main_lobby(self):
+        """Логика главного лобби для quiz."""
+        pass
+
+
 class Client:
     """Клиент сервера."""
 
@@ -33,16 +76,16 @@ class Client:
 class Game:
     """Игровой сеанс."""
 
-    def __init__(self, game_name):
+    def __init__(self, game_name, lobby):
         """Инициализация игры."""
         self.game_name = game_name
+        self.main_lobby = lobby
         self.players = {}
         self.messages = asyncio.Queue()
 
     def add_player(self, client):
         """Добавить игрока в игру."""
         if client.nickname in self.players:
-            # клиент с таким ником уже есть
             return False
         self.players[client.nickname] = client
         return True
@@ -56,10 +99,10 @@ class Game:
         return self.players.get(nickname)
 
     def get_list_nicks(self):
-        """Возвращает список (list) ников
+        """Возвращает список (list) ников.
 
-            Returns:
-                list: список ников(str):
+        Returns:
+            list: список ников (str)
         """
         return list(self.players.keys())
 
@@ -84,7 +127,25 @@ class Server:
         """Инициализация сервера."""
         self.available_games = AVAILABLE_GAMES[:]
         self.clients = {}
-        self.games = {name: Game(name) for name in self.available_games}
+        self.lobbies = self._init_lobbies()
+        self.games = {
+            name: Game(name, self.lobbies[name])
+            for name in self.available_games
+        }
+
+    def _init_lobbies(self):
+        """Создать лобби для всех доступных игр."""
+        lobbies = {}
+
+        for lobby_id, game_name in enumerate(self.available_games, start=1):
+            if game_name == "Xand0":
+                lobbies[game_name] = Xand0Lobby(lobby_id, game_name)
+            elif game_name == "quiz":
+                lobbies[game_name] = QuizLobby(lobby_id, game_name)
+            else:
+                lobbies[game_name] = Lobby(lobby_id, game_name)
+
+        return lobbies
 
     def add_client(self, nickname, score=0):
         """Зарегистрировать игрока."""
@@ -99,14 +160,25 @@ class Server:
         """Удалить клиента с сервера."""
         client = self.clients.pop(nickname, None)
 
-        if client.current_game:
+        if client is not None and client.current_game:
             self.disconnect_from_game(nickname)
 
         return client
 
+    def get_game(self, game_name):
+        """Получить игру по названию."""
+        return self.games.get(game_name)
+
+    def get_lobby(self, game_name):
+        """Получить лобби по названию игры."""
+        return self.lobbies.get(game_name)
+
     def connect_to_game(self, nickname, game_name):
         """Подключить клиента к выбранной игре."""
         client = self.clients.get(nickname)
+
+        if game_name not in self.games:
+            raise ValueError("Unknown game")
 
         game = self.games[game_name]
         game.add_player(client)
@@ -145,12 +217,13 @@ class Server:
 
             game_name = args[1]
 
-
             if game_name not in self.available_games:
-                return f"Unknown game. Available games: {', '.join(self.available_games)}"
+                return (
+                    "Unknown game. Available games: "
+                    + ", ".join(self.available_games)
+                )
 
             self.connect_to_game(nickname, game_name)
-
             return f"{nickname} connected to {game_name}"
 
         return "Invalid command"
