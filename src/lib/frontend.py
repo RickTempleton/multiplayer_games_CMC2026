@@ -1,3 +1,6 @@
+from status_client_support import Error_game
+
+
 class Menager():
     """Класс связывающий фронт- и бэк-енд части локальной программы.
 
@@ -9,12 +12,12 @@ class Menager():
     queue_status = deque()
     queue_messange = deque()
 
-    def push_status(self, status: object, error: int = None):
+    def push_status(self, status: object, error: Error_game = None):
         """Функция для отправки бэкенд частью изменений игры
 
         Args:
             status (object): отправка статуса игры, как правило в виде игрового поля.
-            error (int, optional): Номер ошибки из _ERROR_ => переход к \
+            error (Error_game, optional): Номер ошибки из _ERROR_ => переход к \
                           стандартному набору действий. Defaults to None:int.
         """
         self.queue_status.append((status, error))
