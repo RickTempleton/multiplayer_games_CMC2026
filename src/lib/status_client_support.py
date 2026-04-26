@@ -1,0 +1,10 @@
+_ERROR_ = ("ПОТЕРЯ СОЕДИНЕНИЯ", "НЕВЕРНАЯ КОМАНДА", ...)
+
+_STATUS_ = ("ВЫХОД", "ПОДКЛЮЧЕНИЕ К ЛОББИ", "СОЗДАТЬ ЛОББИ С ИГРОЙ X_O", ...)
+# в статусе перед названием игры строго 22 символа
+
+
+class Error_game(Exception):
+    def __init__(self, message, error_code):
+        super().__init__(message)
+        self.error_code = error_code
