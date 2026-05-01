@@ -1,5 +1,7 @@
-_ERROR_ = ("ПОТЕРЯ СОЕДИНЕНИЯ", ...)
-_STATUS_ = ("СОЗДАТЬ ЛОББИ С ИГРОЙ 1", ...)
+try:
+    from .status_client_support import Error_game
+except ImportError:
+    from status_client_support import Error_game
 
 
 class Menager():
@@ -13,12 +15,12 @@ class Menager():
     queue_status = deque()
     queue_messange = deque()
 
-    def push_status(self, status: object, error: int = None):
+    def push_status(self, status: object, error: Error_game = None):
         """Функция для отправки бэкенд частью изменений игры
 
         Args:
             status (object): отправка статуса игры, как правило в виде игрового поля.
-            error (int, optional): Номер ошибки из _ERROR_ => переход к \
+            error (Error_game, optional): Номер ошибки из _ERROR_ => переход к \
                           стандартному набору действий. Defaults to None:int.
         """
         self.queue_status.append((status, error))
@@ -33,7 +35,7 @@ class Menager():
                     если игра завершилась - str с ником победителя.\
                     В error код глобальной ошибки.
         """
-        return self.queue_status.pop() if len(self.queue_status) else (None, None)
+        return self.queue_status.popleft() if len(self.queue_status) else (None, None)
 
     # Для меню и игр нужно согласовать необходимые сообщения.
     # Например для крестиков-ноликов это может быть в виде:
@@ -41,7 +43,7 @@ class Menager():
     # для всякого рода ввода "введите ник" возвращать нужно tuple (int, str),
     # где int из _STATUS_
 
-    def push_messange(self, messange: object):
+    def push_message(self, messange: object):
         """Функция для отправки фронтенд частью команд управления
 
         Args:
@@ -51,7 +53,7 @@ class Menager():
         """
         self.queue_messange.append(messange)
 
-    def pop_messange(self, ):
+    def pop_message(self, ):
         """Функция для получения бэкенд частью команд управления игрой/меню
 
         Returns:
@@ -61,4 +63,9 @@ class Menager():
                 При пустой очереди возращает None
 
         """
-        return self.queue_messange.pop() if len(self.queue_messange) else None
+        return self.queue_messange.popleft() if len(self.queue_messange) else None
+
+    def pop_messange(self, ):
+        """Обратная совместимость со старым именем метода."""
+
+        return self.pop_message()
