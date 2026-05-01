@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import asyncio
 import random
+import textwrap
+from math import ceil
+from pathlib import Path
 from typing import Callable, Optional
 
 import arcade
@@ -18,12 +21,47 @@ except ImportError:
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 WINDOW_TITLE = "Multiplayer Games CMC 2026"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+GAMES_MEDIA_DIR = PROJECT_ROOT / "media" / "games"
 
 MENU_ACTIONS = [
     ("create_lobby", "СОЗДАТЬ ЛОББИ"),
     ("lobbies", "ДОСТУПНЫЕ ЛОББИ"),
     ("games", "ИГРЫ"),
     ("exit", "ВЫХОД"),
+]
+
+GAME_CARDS = [
+    {
+        "title": "Tanks 1990",
+        "rules": "Два игрока управляют танками на арене. Цель: первым уничтожить соперника нужное число раз.",
+        "colors": ((39, 94, 62), (87, 190, 122)),
+        "image": "tanks_1990.jpg",
+    },
+    {
+        "title": "Pong",
+        "rules": "Классический пинг-понг: двигайте ракетку и отбивайте мяч. Очко получает тот, кто отправил мяч за край соперника.",
+        "colors": ((26, 72, 116), (95, 186, 255)),
+        "image": "pong.jpg",
+    },
+    {
+        "title": "X and O",
+        "rules": "Крестики-нолики для двух игроков. Побеждает тот, кто первым соберет линию из трех своих символов.",
+        "colors": ((81, 46, 126), (184, 128, 255)),
+        "image": "x_0.jpg",
+    },
+    {
+        "title": "Морской бой",
+        "rules": "Разместите флот на поле и по очереди стреляйте по клеткам противника. Побеждает уничтоживший все корабли.",
+        "colors": ((36, 66, 121), (106, 161, 255)),
+        "image": "sea_battle.jpg",
+    },
+    {
+        "title": "Викторина",
+        "rules": "Игроки отвечают на одинаковые вопросы. Побеждает тот, кто набрал больше правильных ответов за раунд.",
+        "colors": ((103, 65, 26), (242, 186, 96)),
+        "image": "quiz.jpg",
+    },
 ]
 
 CYAN = (58, 226, 255)
@@ -540,7 +578,8 @@ class MainMenuView(NeonBaseView):
                  on_action: Optional[Callable[[str], None]] = None):
         super().__init__()
         self.player_name = player_name
-        self.on_action = on_action
+        # Не используем имя с префиксом "on_", чтобы pyglet не принял это за event handler.
+        self.action_callback = on_action
         self.status_text = f"Игрок: {player_name}"
 
         self.title_label = arcade.Text(
@@ -632,16 +671,305 @@ class MainMenuView(NeonBaseView):
             Menager().push_message(("create_game", "X_O"))
 
             def back_to_menu() -> None:
-                self.window.show_view(MainMenuView(self.player_name, self.on_action))
+                self.window.show_view(MainMenuView(self.player_name, self.action_callback))
 
             self.window.show_view(
                 TicTacToeView(player_name=self.player_name, on_back=back_to_menu)
             )
             return
 
+        if action == "games":
+            self.window.show_view(
+                GamesCatalogView(player_name=self.player_name, on_back=lambda: self.window.show_view(
+                    MainMenuView(self.player_name, self.action_callback)
+                ))
+            )
+            return
+
         self.status_text = f"{self.player_name}: выбрано '{caption}'"
-        if self.on_action:
-            self.on_action(action)
+        if self.action_callback:
+            self.action_callback(action)
+
+
+class GamesCatalogView(NeonBaseView):
+    """Экран со списком доступных игр и короткими правилами."""
+
+    def __init__(self, player_name: str, on_back: Callable[[], None]):
+        super().__init__()
+        self.player_name = player_name
+        self.on_back = on_back
+        self._texture_cache: dict[str, arcade.Texture | None] = {}
+        self.title_label = arcade.Text(
+            "ДОСТУПНЫЕ ИГРЫ",
+            x=0,
+            y=0,
+            color=(228, 243, 255),
+            font_size=48,
+            font_name=("Bahnschrift", "Calibri", "Arial"),
+            anchor_x="center",
+            anchor_y="center",
+            bold=True,
+        )
+        self._build_ui()
+
+    def _build_ui(self) -> None:
+        back_button = arcade.gui.UIFlatButton(
+            text="НАЗАД В МЕНЮ",
+            width=250,
+            height=56,
+            style=build_primary_button_style(),
+        )
+
+        @back_button.event("on_click")
+        def on_click(_event):
+            self.on_back()
+
+        anchor_widget_cls = getattr(arcade.gui, "UIAnchorWidget", None)
+        if anchor_widget_cls is not None:
+            self.ui.add(
+                anchor_widget_cls(
+                    anchor_x="right",
+                    anchor_y="top",
+                    align_x=-14,
+                    align_y=-12,
+                    child=back_button,
+                )
+            )
+            return
+
+        anchor_layout = arcade.gui.UIAnchorLayout()
+        anchor_layout.add(
+            child=back_button,
+            anchor_x="right",
+            anchor_y="top",
+            align_x=-14,
+            align_y=-12,
+        )
+        self.ui.add(anchor_layout)
+
+    def on_draw(self) -> None:
+        self.clear()
+        self._draw_games_background()
+        self._draw_shell()
+        self._draw_titles()
+        self._draw_game_cards()
+        self.ui.draw()
+
+    def _draw_games_background(self) -> None:
+        self._draw_vertical_gradient(top_color=BG_TOP, bottom_color=BG_BOTTOM, steps=60)
+        self._draw_stars()
+        self._draw_grid_perspective()
+
+    def _draw_shell(self) -> None:
+        self._draw_filled_rect(
+            self.window.width * 0.06,
+            self.window.width * 0.94,
+            self.window.height * 0.08,
+            self.window.height * 0.88,
+            (5, 12, 30, 100),
+        )
+        self._draw_outlined_rect(
+            self.window.width * 0.06,
+            self.window.width * 0.94,
+            self.window.height * 0.08,
+            self.window.height * 0.88,
+            (66, 188, 255, 72),
+            border_width=2,
+        )
+
+    def _draw_titles(self) -> None:
+        self.title_label.x = self.window.width / 2
+        self.title_label.y = self.window.height * 0.94
+        self.title_label.draw()
+
+    def _draw_game_cards(self) -> None:
+        screen_w = self.window.width
+        screen_h = self.window.height
+        area_left = screen_w * 0.09
+        area_right = screen_w * 0.91
+        area_top = screen_h * 0.80
+        area_bottom = screen_h * 0.11
+        area_w = area_right - area_left
+        area_h = area_top - area_bottom
+
+        if screen_w >= 1200:
+            cols = 3
+        elif screen_w >= 820:
+            cols = 2
+        else:
+            cols = 1
+
+        rows = ceil(len(GAME_CARDS) / cols)
+        x_gap = max(18, screen_w * 0.016)
+        y_gap = max(16, screen_h * 0.022)
+        card_w = (area_w - x_gap * (cols - 1)) / cols
+        card_h = (area_h - y_gap * (rows - 1)) / rows
+
+        for idx, game in enumerate(GAME_CARDS):
+            row = idx // cols
+            col = idx % cols
+            left = area_left + col * (card_w + x_gap)
+            right = left + card_w
+            top = area_top - row * (card_h + y_gap)
+            bottom = top - card_h
+            self._draw_single_card(left, right, bottom, top, game)
+
+    def _draw_single_card(self, left: float, right: float, bottom: float, top: float, game: dict) -> None:
+        self._draw_filled_rect(left, right, bottom, top, (8, 20, 48, 225))
+        self._draw_outlined_rect(left, right, bottom, top, (104, 219, 255, 135), border_width=2)
+
+        card_h = top - bottom
+        card_w = right - left
+        pad_x = max(14, card_w * 0.04)
+        pad_y = max(12, card_h * 0.05)
+        title_size = 20 if card_w > 420 else 18
+        rules_size = 14 if card_w > 420 else 13
+
+        title_y = top - pad_y - 8
+        arcade.draw_text(
+            game["title"],
+            (left + right) / 2,
+            title_y,
+            (233, 246, 255),
+            title_size,
+            anchor_x="center",
+            anchor_y="center",
+            font_name=("Bahnschrift", "Calibri", "Arial"),
+            bold=True,
+        )
+
+        title_block_h = max(34, card_h * 0.16)
+        img_left = left + pad_x
+        img_right = right - pad_x
+        img_top = top - title_block_h - pad_y
+        img_bottom = img_top - card_h * 0.45
+        img_col_1, img_col_2 = game["colors"]
+
+        self._draw_game_preview(
+            image_name=game.get("image"),
+            left=img_left,
+            right=img_right,
+            bottom=img_bottom,
+            top=img_top,
+            fallback_color=img_col_1,
+        )
+        self._draw_outlined_rect(img_left, img_right, img_bottom, img_top, img_col_2, border_width=2)
+
+        rules_top = img_bottom - 10
+        rules_bottom = bottom + pad_y
+        rules_height = max(42, rules_top - rules_bottom)
+        wrapped, rules_size = self._fit_rules_text(
+            text=game["rules"],
+            text_width=(img_right - img_left),
+            text_height=rules_height,
+            initial_size=rules_size,
+        )
+        self._draw_rules_lines(
+            lines=wrapped,
+            left=img_left,
+            top=rules_top,
+            bottom=rules_bottom,
+            font_size=rules_size,
+        )
+
+    def _fit_rules_text(
+        self,
+        text: str,
+        text_width: float,
+        text_height: float,
+        initial_size: int,
+    ) -> tuple[list[str], int]:
+        """Подбирает перенос и размер шрифта так, чтобы весь текст влезал в карточку."""
+        for size in range(initial_size, 10, -1):
+            wrap_width = max(18, int(text_width / (size * 0.58)))
+            lines = textwrap.wrap(text, width=wrap_width)
+            line_step = int(size * 1.32)
+            if len(lines) * line_step <= text_height:
+                return lines, size
+
+        size = 10
+        wrap_width = max(16, int(text_width / (size * 0.58)))
+        lines = textwrap.wrap(text, width=wrap_width)
+        max_lines = max(1, int(text_height / int(size * 1.32)))
+        if len(lines) > max_lines:
+            lines = lines[:max_lines]
+            lines[-1] = lines[-1].rstrip(" .,!?:;") + "..."
+        return lines, size
+
+    def _draw_game_preview(
+        self,
+        image_name: Optional[str],
+        left: float,
+        right: float,
+        bottom: float,
+        top: float,
+        fallback_color: tuple[int, int, int],
+    ) -> None:
+        texture = self._get_texture(image_name) if image_name else None
+        if texture is None:
+            self._draw_filled_rect(left, right, bottom, top, fallback_color)
+            return
+
+        # Фон под картинку на случай "полей" при сохранении пропорций.
+        self._draw_filled_rect(left, right, bottom, top, (10, 16, 30, 235))
+
+        box_w = right - left
+        box_h = top - bottom
+        tex_w = max(float(texture.width), 1.0)
+        tex_h = max(float(texture.height), 1.0)
+        scale = min(box_w / tex_w, box_h / tex_h)
+
+        sprite = arcade.Sprite()
+        sprite.texture = texture
+        sprite.width = tex_w * scale
+        sprite.height = tex_h * scale
+        sprite.center_x = (left + right) / 2
+        sprite.center_y = (bottom + top) / 2
+        sprite_list = arcade.SpriteList()
+        sprite_list.append(sprite)
+        sprite_list.draw(pixelated=False)
+
+    def _get_texture(self, image_name: str) -> Optional[arcade.Texture]:
+        if image_name in self._texture_cache:
+            return self._texture_cache[image_name]
+
+        image_path = GAMES_MEDIA_DIR / image_name
+        if not image_path.exists():
+            self._texture_cache[image_name] = None
+            return None
+
+        try:
+            texture = arcade.load_texture(str(image_path))
+        except Exception:
+            texture = None
+        self._texture_cache[image_name] = texture
+        return texture
+
+    def _draw_rules_lines(
+        self,
+        lines: list[str],
+        left: float,
+        top: float,
+        bottom: float,
+        font_size: int,
+    ) -> None:
+        """Рисует правила строго построчно в прямоугольной области карточки."""
+        line_step = int(font_size * 1.32)
+        y = top
+        for line in lines:
+            if y - line_step < bottom:
+                break
+            arcade.draw_text(
+                line,
+                left,
+                y,
+                (186, 211, 238),
+                font_size,
+                anchor_x="left",
+                anchor_y="top",
+                font_name=("Calibri", "Arial"),
+            )
+            y -= line_step
 
 
 async def run() -> None:
