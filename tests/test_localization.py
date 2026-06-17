@@ -48,6 +48,23 @@ class LocalizationTest(unittest.TestCase):
         self.assertEqual(tr("game.snake.title"), "Snake")
         self.assertEqual(tr("game.x_o.title"), "X and O")
 
+    def test_quiz_questions_are_translated(self) -> None:
+        """Вопросы и ответы викторины переводятся по ключам."""
+
+        self.assertEqual(
+            tr("quiz.question.jackson_middle_name"),
+            "Назовите второе имя Майкла Джексона?",
+        )
+        self.assertEqual(tr("quiz.answer.jackson_joseph"), "Джозеф")
+
+        set_locale("en")
+
+        self.assertEqual(
+            tr("quiz.question.jackson_middle_name"),
+            "What was Michael Jackson's middle name?",
+        )
+        self.assertEqual(tr("quiz.answer.jackson_joseph"), "Joseph")
+
     def test_toggle_locale_switches_language(self) -> None:
         """Переключатель языка меняет ru на en и обратно."""
 
