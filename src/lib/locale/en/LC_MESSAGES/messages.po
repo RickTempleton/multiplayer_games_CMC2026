@@ -296,6 +296,60 @@ msgstr ""
 "Players answer the same questions. The winner is the player with more "
 "correct answers in the round."
 
+msgid "quiz.waiting"
+msgstr "Waiting for a player to connect"
+
+msgid "quiz.joined"
+msgstr "Player joined. Press START."
+
+msgid "quiz.start"
+msgstr "Game started"
+
+msgid "quiz.answer"
+msgstr "Waiting for an answer"
+
+msgid "quiz.choose_answer"
+msgstr "Choose an answer"
+
+msgid "quiz.wait_answer"
+msgstr "Waiting for the second player"
+
+msgid "quiz.answered"
+msgstr "Both players answered"
+
+msgid "quiz.finished"
+msgstr "Game finished"
+
+msgid "quiz.score_title"
+msgstr "Correct answers count:"
+
+msgid "quiz.start_button"
+msgstr "START"
+
+msgid "quiz.next_button"
+msgstr "NEXT"
+
+msgid "quiz.back"
+msgstr "MENU"
+
+msgid "quiz.leave"
+msgstr "Opponent left the game"
+
+msgid "quiz.empty_lobby"
+msgstr "Lobby members will appear after server connection"
+
+msgid "quiz.lobby_id"
+msgstr "LOBBY ID"
+
+msgid "quiz.lobby"
+msgstr "Lobby: {players}"
+
+msgid "quiz.question_counter"
+msgstr "Question {current}/{total}"
+
+msgid "quiz.correct_answers"
+msgstr "Correct answers:"
+
 msgid "x_o.idle"
 msgstr "Create a lobby or join a game"
 

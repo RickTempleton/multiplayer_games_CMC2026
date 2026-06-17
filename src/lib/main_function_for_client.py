@@ -932,8 +932,103 @@ async def snake_run(game):
             pass
 
 
+async def quiz_run(game):
+    """Минимальная клиентская заглушка викторины."""
+
+    manager = Manager()
+
+    def push_quiz_status(status, payload=None):
+        payload = payload or {}
+        manager.push_status(
+            {
+                "game": "QUIZ",
+                "nicks": list(game.nicks),
+                "lobby_id": game.get_id(),
+                "status": status,
+                "players": payload.get("players", list(game.nicks)),
+                "question_index": payload.get("question_index", 0),
+                "total_questions": payload.get("total_questions", 0),
+                "question": payload.get("question"),
+                "options": payload.get("options", []),
+                "answers": payload.get("answers", {}),
+                "scores": payload.get("scores", {}),
+                "correct_answers": payload.get("correct_answers", []),
+            }
+        )
+
+    await game.get_nicks()
+    push_quiz_status("waiting")
+    task = asyncio.create_task(game.pop_message())
+
+    try:
+        while True:
+            await asyncio.sleep(0.01)
+
+            user_message = manager.pop_message()
+            if (
+                isinstance(user_message, dict)
+                and user_message.get("action") == "leave_game"
+            ):
+                task.cancel()
+                try:
+                    await task
+                except asyncio.CancelledError:
+                    pass
+                await game.leave()
+                return
+
+            if user_message == "start":
+                await game.push_message({"status": "start"})
+
+            if isinstance(user_message, dict):
+                if user_message.get("action") == "answer":
+                    await game.push_message(
+                        {
+                            "status": "answer",
+                            "message": user_message.get("answer"),
+                        }
+                    )
+                    continue
+
+                if user_message.get("action") == "next":
+                    await game.push_message({"status": "next"})
+                    continue
+
+            if task.done():
+                message = task.result()
+                task = asyncio.create_task(game.pop_message())
+                payload = message.get("message")
+                if not isinstance(payload, dict):
+                    payload = {}
+
+                match message.get("status"):
+                    case "joined":
+                        status = "joined" if len(game.nicks) >= 2 else "waiting"
+                    case "waiting":
+                        status = "waiting"
+                    case "question" | "answer" | "answered" | "finished":
+                        status = message.get("status")
+                    case "leave":
+                        status = "leave"
+                    case "error":
+                        raise ClientServerError(message.get("message"))
+                    case _:
+                        continue
+
+                push_quiz_status(status, payload)
+
+    finally:
+        task.cancel()
+
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+
+
 CLIENT_GAMES = {
     "X_O": x_o_run,
     "PONG": pong_run,
     "SNAKE": snake_run,
+    "QUIZ": quiz_run,
 }

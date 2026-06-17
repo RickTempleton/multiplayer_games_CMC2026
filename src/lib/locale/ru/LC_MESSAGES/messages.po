@@ -296,6 +296,60 @@ msgstr ""
 "Игроки отвечают на одинаковые вопросы. Побеждает тот, кто набрал больше "
 "правильных ответов за раунд."
 
+msgid "quiz.waiting"
+msgstr "Ожидание подключения игрока"
+
+msgid "quiz.joined"
+msgstr "Игрок подключился. Нажмите СТАРТ."
+
+msgid "quiz.start"
+msgstr "Игра началась"
+
+msgid "quiz.answer"
+msgstr "Ожидание ответа"
+
+msgid "quiz.choose_answer"
+msgstr "Выберите вариант ответа"
+
+msgid "quiz.wait_answer"
+msgstr "Ожидаем ответ второго игрока"
+
+msgid "quiz.answered"
+msgstr "Оба игрока ответили"
+
+msgid "quiz.finished"
+msgstr "Игра окончена"
+
+msgid "quiz.score_title"
+msgstr "Количество верных ответов:"
+
+msgid "quiz.start_button"
+msgstr "СТАРТ"
+
+msgid "quiz.next_button"
+msgstr "ДАЛЕЕ"
+
+msgid "quiz.back"
+msgstr "В МЕНЮ"
+
+msgid "quiz.leave"
+msgstr "Соперник покинул игру"
+
+msgid "quiz.empty_lobby"
+msgstr "Состав лобби появится после подключения к серверу"
+
+msgid "quiz.lobby_id"
+msgstr "ID ЛОББИ"
+
+msgid "quiz.lobby"
+msgstr "Лобби: {players}"
+
+msgid "quiz.question_counter"
+msgstr "Вопрос {current}/{total}"
+
+msgid "quiz.correct_answers"
+msgstr "Правильные ответы:"
+
 msgid "x_o.idle"
 msgstr "Создайте лобби или подключитесь к игре"
 

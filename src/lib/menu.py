@@ -43,6 +43,7 @@ LOBBY_GAMES = [
     ("X_O", "game.x_o.title"),
     ("PONG", "game.pong.title"),
     ("SNAKE", "game.snake.title"),
+    ("QUIZ", "game.quiz.title"),
 ]
 
 GAME_CARDS = [
@@ -261,6 +262,22 @@ def show_snake_view(window, player_name: str, on_back: Callable[[], None]) -> No
 
     window.show_view(
         SnakeView(
+            player_name=player_name,
+            on_back=on_back,
+        )
+    )
+
+
+def show_quiz_view(window, player_name: str, on_back: Callable[[], None]) -> None:
+    """Открывает экран викторины."""
+
+    try:
+        from .quiz_frontend import QuizView
+    except ImportError:
+        from quiz_frontend import QuizView
+
+    window.show_view(
+        QuizView(
             player_name=player_name,
             on_back=on_back,
         )
@@ -1256,6 +1273,10 @@ class JoinLobbyView(NeonBaseView):
                 show_snake_view(self.window, self.player_name, self.on_back)
                 return
 
+            if isinstance(status, dict) and status.get("view") == "open_quiz":
+                show_quiz_view(self.window, self.player_name, self.on_back)
+                return
+
             if isinstance(status, dict) and status.get("view") == "create_error":
                 self.error_text = tr_error(
                     status.get("message", tr("create.failed"))
@@ -1432,8 +1453,8 @@ class CreateLobbyView(NeonBaseView):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        self.form_box = arcade.gui.UIBoxLayout(space_between=14)
-        self.games_box = arcade.gui.UIBoxLayout(space_between=10)
+        self.form_box = arcade.gui.UIBoxLayout(space_between=10)
+        self.games_box = arcade.gui.UIBoxLayout(space_between=7)
         self.buttons_box = arcade.gui.UIBoxLayout(
             vertical=False, space_between=14
         )
@@ -1442,7 +1463,7 @@ class CreateLobbyView(NeonBaseView):
             button = arcade.gui.UIFlatButton(
                 text=self._game_button_text(game_id, title_key),
                 width=500,
-                height=58,
+                height=44,
                 style=build_primary_button_style(),
             )
 
@@ -1499,7 +1520,7 @@ class CreateLobbyView(NeonBaseView):
         self.form_box.add(self.id_label)
         self.form_box.add(self.lobby_input)
         self.form_box.add(self.buttons_box)
-        self._add_centered_widget(self.form_box, align_y=-80)
+        self._add_centered_widget(self.form_box, align_y=-62)
         self._add_locale_toggle()
         self._register_responsive_text(self.title_label, 48, 12, 0.36)
         self._register_responsive_text(self.prompt_label, 24, 12, 0.44)
@@ -1512,12 +1533,12 @@ class CreateLobbyView(NeonBaseView):
         self._register_responsive_button(self.create_button)
         self._register_responsive_button(self.back_button)
         self._register_responsive_input(self.lobby_input, 24)
-        self._register_responsive_box(self.form_box, 14, 6)
-        self._register_responsive_box(self.games_box, 10, 5)
+        self._register_responsive_box(self.form_box, 10, 5)
+        self._register_responsive_box(self.games_box, 7, 4)
         self._register_responsive_box(self.buttons_box, 14, 7)
         for button, _title_key in self.game_buttons.values():
-            self._register_responsive_widget(button, 500, 58, 280, 36)
-            self._register_responsive_button(button)
+            self._register_responsive_widget(button, 500, 44, 280, 30)
+            self._register_responsive_button(button, 20, 11)
 
     def on_show_view(self) -> None:
         """Фокусирует поле ID лобби при открытии экрана."""
@@ -1547,6 +1568,10 @@ class CreateLobbyView(NeonBaseView):
 
             if isinstance(status, dict) and status.get("view") == "open_snake":
                 show_snake_view(self.window, self.player_name, self.on_back)
+                return
+
+            if isinstance(status, dict) and status.get("view") == "open_quiz":
+                show_quiz_view(self.window, self.player_name, self.on_back)
                 return
 
             if isinstance(status, dict) and status.get("view") == "open_x_o":
@@ -1590,7 +1615,7 @@ class CreateLobbyView(NeonBaseView):
             width * 0.22, width * 0.78, height * 0.11,
             height * 0.78, (66, 188, 255, 90), 2)
         self._draw_filled_rect(width * 0.38, width * 0.62,
-                               height * 0.655, height * 0.725, (20, 52, 110, 80))
+                               height * 0.665, height * 0.725, (20, 52, 110, 80))
 
     def _draw_text_layer(self) -> None:
         self._refresh_texts()
@@ -1600,7 +1625,7 @@ class CreateLobbyView(NeonBaseView):
         self.title_label.draw()
 
         self.prompt_label.x = self.window.width / 2
-        self.prompt_label.y = self.window.height * 0.69
+        self.prompt_label.y = self.window.height * 0.695
         self.prompt_label.draw()
 
         self.error_label.text = self.error_text
@@ -1768,6 +1793,15 @@ class MainMenuView(NeonBaseView):
                     )
 
                 show_snake_view(self.window, self.player_name, back_to_menu)
+                return
+
+            if isinstance(status, dict) and status.get("view") == "open_quiz":
+                def back_to_menu() -> None:
+                    self.window.show_view(
+                        MainMenuView(self.player_name, self.action_callback)
+                    )
+
+                show_quiz_view(self.window, self.player_name, back_to_menu)
                 return
 
             if isinstance(status, dict) and status.get("view") == "open_x_o":
