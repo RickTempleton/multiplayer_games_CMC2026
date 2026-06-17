@@ -58,10 +58,10 @@ main.client
 ## Автоматизация
 
 ```bash
-python -m doit list
-python -m doit i18n
-python -m doit test
-python -m doit html
+doit list
+doit i18n
+doit test
+doit html
 ```
 
 ## Сборка wheel
@@ -70,12 +70,12 @@ python -m doit html
 python -m build --wheel
 ```
 
-## Sphinx-документация
+## Просмотр документации
 
 ```bash
-python -m sphinx -b html docs docs/_build/html
+doit html
+open docs/_build/html/index.html (MacOS)
+xdg-open docs/_build/html/index.html (Linux)
+Start-Process docs/_build/html/index.html (Windows)
 ```
 
-
-
-   
