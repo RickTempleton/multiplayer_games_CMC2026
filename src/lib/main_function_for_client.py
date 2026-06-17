@@ -938,6 +938,14 @@ async def quiz_run(game):
     manager = Manager()
 
     await game.get_nicks()
+    manager.push_status(
+        {
+            "game": "QUIZ",
+            "nicks": list(game.nicks),
+            "lobby_id": game.get_id(),
+            "status": "waiting",
+        }
+    )
     task = asyncio.create_task(game.pop_message())
 
     try:
@@ -957,9 +965,35 @@ async def quiz_run(game):
                 await game.leave()
                 return
 
+            if user_message == "start":
+                await game.push_message({"status": "start"})
+
             if task.done():
-                task.result()
+                message = task.result()
                 task = asyncio.create_task(game.pop_message())
+
+                match message.get("status"):
+                    case "joined":
+                        status = "joined" if len(game.nicks) >= 2 else "waiting"
+                    case "waiting":
+                        status = "waiting"
+                    case "start":
+                        status = "start"
+                    case "leave":
+                        status = "leave"
+                    case "error":
+                        raise ClientServerError(message.get("message"))
+                    case _:
+                        continue
+
+                manager.push_status(
+                    {
+                        "game": "QUIZ",
+                        "nicks": list(game.nicks),
+                        "lobby_id": game.get_id(),
+                        "status": status,
+                    }
+                )
 
     finally:
         task.cancel()

@@ -425,6 +425,26 @@ async def quiz_main_lobby(lobby):
                     }
                 )
 
+            case "client", "start":
+                if len(lobby.get_list_nicks()) < lobby.max_players:
+                    lobby.push_message(
+                        {
+                            "target": "client",
+                            "status": "waiting",
+                            "message": nick,
+                        },
+                        [nick],
+                    )
+                    continue
+
+                lobby.push_message(
+                    {
+                        "target": "client",
+                        "status": "start",
+                        "message": nick,
+                    }
+                )
+
             case _:
                 continue
 
