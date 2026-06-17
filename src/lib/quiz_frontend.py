@@ -29,12 +29,12 @@ except ImportError:
     )
 
 
-QUESTION_PLACEHOLDER = "Вопрос появится здесь"
+QUESTION_PLACEHOLDER = "quiz.question_placeholder"
 ANSWER_PLACEHOLDERS = (
-    "A. Вариант ответа",
-    "B. Вариант ответа",
-    "C. Вариант ответа",
-    "D. Вариант ответа",
+    "quiz.answer_placeholder",
+    "quiz.answer_placeholder",
+    "quiz.answer_placeholder",
+    "quiz.answer_placeholder",
 )
 ANSWER_LETTERS = ("A", "B", "C", "D")
 ANSWER_BLUE = (50, 155, 255)
@@ -101,7 +101,7 @@ class QuizView(NeonBaseView):
             bold=True,
         )
         self.question_label = arcade.Text(
-            QUESTION_PLACEHOLDER,
+            tr(QUESTION_PLACEHOLDER),
             x=0,
             y=0,
             color=(236, 247, 255),
@@ -542,14 +542,20 @@ class QuizView(NeonBaseView):
         return ""
 
     def _question_text(self) -> str:
-        return self.question or QUESTION_PLACEHOLDER
+        if self.question:
+            return tr(self.question)
+
+        return tr("quiz.question_placeholder")
 
     def _answer_texts(self) -> list[str]:
         if not self.options:
-            return list(ANSWER_PLACEHOLDERS)
+            return [
+                f"{ANSWER_LETTERS[index]}. {tr(option_key)}"
+                for index, option_key in enumerate(ANSWER_PLACEHOLDERS)
+            ]
 
         return [
-            f"{ANSWER_LETTERS[index]}. {answer}"
+            f"{ANSWER_LETTERS[index]}. {tr(answer)}"
             for index, answer in enumerate(self.options[:4])
         ]
 
@@ -567,7 +573,8 @@ class QuizView(NeonBaseView):
         answers = [tr("quiz.correct_answers")]
 
         for index, item in enumerate(self.correct_answers):
-            answers.append(f"{index + 1}. {item.get('correct', '-')}")
+            correct = item.get("correct", "-")
+            answers.append(f"{index + 1}. {tr(correct)}")
 
         return "\n".join(answers)
 

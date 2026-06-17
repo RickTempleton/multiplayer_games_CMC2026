@@ -350,6 +350,134 @@ msgstr "Вопрос {current}/{total}"
 msgid "quiz.correct_answers"
 msgstr "Правильные ответы:"
 
+msgid "quiz.question_placeholder"
+msgstr "Вопрос появится здесь"
+
+msgid "quiz.answer_placeholder"
+msgstr "Вариант ответа"
+
+msgid "quiz.question.jackson_middle_name"
+msgstr "Назовите второе имя Майкла Джексона?"
+
+msgid "quiz.answer.jackson_joseph"
+msgstr "Джозеф"
+
+msgid "quiz.answer.jackson_john"
+msgstr "Джон"
+
+msgid "quiz.answer.jackson_james"
+msgstr "Джеймс"
+
+msgid "quiz.answer.jackson_jim"
+msgstr "Джим"
+
+msgid "quiz.question.pharaoh_headdress"
+msgstr ""
+"Как назывался особый головной убор, который носили фараоны в Древнем "
+"Египте?"
+
+msgid "quiz.answer.kartuz"
+msgstr "Картуз"
+
+msgid "quiz.answer.nemes"
+msgstr "Немес"
+
+msgid "quiz.answer.crown"
+msgstr "Корона"
+
+msgid "quiz.answer.ubrus"
+msgstr "Убрус"
+
+msgid "quiz.question.detynets"
+msgstr "Детинцем на Руси называли..."
+
+msgid "quiz.answer.kremlin"
+msgstr "Кремль"
+
+msgid "quiz.answer.school"
+msgstr "Школу"
+
+msgid "quiz.answer.princely_palace"
+msgstr "Княжеский терем"
+
+msgid "quiz.answer.monastery"
+msgstr "Монастырь"
+
+msgid "quiz.question.old_builder"
+msgstr "Как называли строителя в старину?"
+
+msgid "quiz.answer.cooper"
+msgstr "Бондарь"
+
+msgid "quiz.answer.beekeeper"
+msgstr "Бортник"
+
+msgid "quiz.answer.architect"
+msgstr "Зодчий"
+
+msgid "quiz.answer.helmsman"
+msgstr "Кормчий"
+
+msgid "quiz.question.proverb_cat"
+msgstr "Продолжите пословицу: «Знает кошка...»"
+
+msgid "quiz.answer.mice_do_not_know"
+msgstr "Да мыши не знают"
+
+msgid "quiz.answer.how_much_trouble_costs"
+msgstr "Почем фунт лиха"
+
+msgid "quiz.answer.where_secret_lies"
+msgstr "Где собака зарыта"
+
+msgid "quiz.answer.whose_meat_it_ate"
+msgstr "Чье мясо съела"
+
+msgid "quiz.question.carnivorous_plant"
+msgstr "Какое из этих растений - плотоядное?"
+
+msgid "quiz.answer.bupleurum"
+msgstr "Володушка"
+
+msgid "quiz.answer.sundew"
+msgstr "Росянка"
+
+msgid "quiz.answer.pedicularis"
+msgstr "Мытник"
+
+msgid "quiz.answer.astragalus"
+msgstr "Астрагал"
+
+msgid "quiz.question.rooftop_climber"
+msgstr "Как называется человек, покоряющий крыши многоэтажных домов?"
+
+msgid "quiz.answer.digger"
+msgstr "Диггер"
+
+msgid "quiz.answer.stalker"
+msgstr "Сталкер"
+
+msgid "quiz.answer.roofer"
+msgstr "Руфер"
+
+msgid "quiz.answer.biker"
+msgstr "Байкер"
+
+msgid "quiz.question.wedding_anniversaries"
+msgstr "Сколько лет проходит между ситцевой и золотой свадьбой?"
+
+msgid "quiz.answer.eleven"
+msgstr "11"
+
+msgid "quiz.answer.nineteen"
+msgstr "19"
+
+msgid "quiz.answer.twenty_five"
+msgstr "25"
+
+msgid "quiz.answer.forty_nine"
+msgstr "49"
+
 msgid "x_o.idle"
 msgstr "Создайте лобби или подключитесь к игре"
 

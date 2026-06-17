@@ -350,6 +350,132 @@ msgstr "Question {current}/{total}"
 msgid "quiz.correct_answers"
 msgstr "Correct answers:"
 
+msgid "quiz.question_placeholder"
+msgstr "The question will appear here"
+
+msgid "quiz.answer_placeholder"
+msgstr "Answer option"
+
+msgid "quiz.question.jackson_middle_name"
+msgstr "What was Michael Jackson's middle name?"
+
+msgid "quiz.answer.jackson_joseph"
+msgstr "Joseph"
+
+msgid "quiz.answer.jackson_john"
+msgstr "John"
+
+msgid "quiz.answer.jackson_james"
+msgstr "James"
+
+msgid "quiz.answer.jackson_jim"
+msgstr "Jim"
+
+msgid "quiz.question.pharaoh_headdress"
+msgstr "What was the special headdress worn by pharaohs in Ancient Egypt called?"
+
+msgid "quiz.answer.kartuz"
+msgstr "Kartuz"
+
+msgid "quiz.answer.nemes"
+msgstr "Nemes"
+
+msgid "quiz.answer.crown"
+msgstr "Crown"
+
+msgid "quiz.answer.ubrus"
+msgstr "Ubrus"
+
+msgid "quiz.question.detynets"
+msgstr "In Old Rus, a detynets was called..."
+
+msgid "quiz.answer.kremlin"
+msgstr "A kremlin"
+
+msgid "quiz.answer.school"
+msgstr "A school"
+
+msgid "quiz.answer.princely_palace"
+msgstr "A princely palace"
+
+msgid "quiz.answer.monastery"
+msgstr "A monastery"
+
+msgid "quiz.question.old_builder"
+msgstr "What was a builder called in old times?"
+
+msgid "quiz.answer.cooper"
+msgstr "Cooper"
+
+msgid "quiz.answer.beekeeper"
+msgstr "Beekeeper"
+
+msgid "quiz.answer.architect"
+msgstr "Architect"
+
+msgid "quiz.answer.helmsman"
+msgstr "Helmsman"
+
+msgid "quiz.question.proverb_cat"
+msgstr "Complete the proverb: 'The cat knows...'"
+
+msgid "quiz.answer.mice_do_not_know"
+msgstr "but the mice do not"
+
+msgid "quiz.answer.how_much_trouble_costs"
+msgstr "how much trouble costs"
+
+msgid "quiz.answer.where_secret_lies"
+msgstr "where the secret lies"
+
+msgid "quiz.answer.whose_meat_it_ate"
+msgstr "whose meat it ate"
+
+msgid "quiz.question.carnivorous_plant"
+msgstr "Which of these plants is carnivorous?"
+
+msgid "quiz.answer.bupleurum"
+msgstr "Bupleurum"
+
+msgid "quiz.answer.sundew"
+msgstr "Sundew"
+
+msgid "quiz.answer.pedicularis"
+msgstr "Pedicularis"
+
+msgid "quiz.answer.astragalus"
+msgstr "Astragalus"
+
+msgid "quiz.question.rooftop_climber"
+msgstr "What do you call a person who climbs roofs of tall buildings?"
+
+msgid "quiz.answer.digger"
+msgstr "Digger"
+
+msgid "quiz.answer.stalker"
+msgstr "Stalker"
+
+msgid "quiz.answer.roofer"
+msgstr "Roofer"
+
+msgid "quiz.answer.biker"
+msgstr "Biker"
+
+msgid "quiz.question.wedding_anniversaries"
+msgstr "How many years pass between a calico and a golden wedding anniversary?"
+
+msgid "quiz.answer.eleven"
+msgstr "11"
+
+msgid "quiz.answer.nineteen"
+msgstr "19"
+
+msgid "quiz.answer.twenty_five"
+msgstr "25"
+
+msgid "quiz.answer.forty_nine"
+msgstr "49"
+
 msgid "x_o.idle"
 msgstr "Create a lobby or join a game"
 

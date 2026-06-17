@@ -401,52 +401,84 @@ async def snake_main_lobby(lobby):
 QUIZ_ROUND_SIZE = 5
 QUIZ_QUESTION_BANK = [
     {
-        "question": "Назовите второе имя Майкла Джексона?",
-        "correct": "Джозеф",
-        "answers": ["Джозеф", "Джон", "Джеймс", "Джим"],
-    },
-    {
-        "question": (
-            "Как назывался особый головной убор, который носили фараоны "
-            "в Древнем Египте?"
-        ),
-        "correct": "Немес",
-        "answers": ["Картуз", "Немес", "Корона", "Убрус"],
-    },
-    {
-        "question": "Детинцем на Руси называли...",
-        "correct": "Кремль",
-        "answers": ["Кремль", "Школу", "Княжеский терем", "Монастырь"],
-    },
-    {
-        "question": "Как называли строителя в старину?",
-        "correct": "Зодчий",
-        "answers": ["Бондарь", "Бортник", "Зодчий", "Кормчий"],
-    },
-    {
-        "question": "Продолжите пословицу: «Знает кошка...»",
-        "correct": "Чье мясо съела",
+        "question": "quiz.question.jackson_middle_name",
+        "correct": "quiz.answer.jackson_joseph",
         "answers": [
-            "Да мыши не знают",
-            "Почем фунт лиха",
-            "Где собака зарыта",
-            "Чье мясо съела",
+            "quiz.answer.jackson_joseph",
+            "quiz.answer.jackson_john",
+            "quiz.answer.jackson_james",
+            "quiz.answer.jackson_jim",
         ],
     },
     {
-        "question": "Какое из этих растений - плотоядное?",
-        "correct": "Росянка",
-        "answers": ["Володушка", "Росянка", "Мытник", "Астрагал"],
+        "question": "quiz.question.pharaoh_headdress",
+        "correct": "quiz.answer.nemes",
+        "answers": [
+            "quiz.answer.kartuz",
+            "quiz.answer.nemes",
+            "quiz.answer.crown",
+            "quiz.answer.ubrus",
+        ],
     },
     {
-        "question": "Как называется человек, покоряющий крыши многоэтажных домов?",
-        "correct": "Руфер",
-        "answers": ["Диггер", "Сталкер", "Руфер", "Байкер"],
+        "question": "quiz.question.detynets",
+        "correct": "quiz.answer.kremlin",
+        "answers": [
+            "quiz.answer.kremlin",
+            "quiz.answer.school",
+            "quiz.answer.princely_palace",
+            "quiz.answer.monastery",
+        ],
     },
     {
-        "question": "Сколько лет проходит между ситцевой и золотой свадьбой?",
-        "correct": "49",
-        "answers": ["11", "19", "25", "49"],
+        "question": "quiz.question.old_builder",
+        "correct": "quiz.answer.architect",
+        "answers": [
+            "quiz.answer.cooper",
+            "quiz.answer.beekeeper",
+            "quiz.answer.architect",
+            "quiz.answer.helmsman",
+        ],
+    },
+    {
+        "question": "quiz.question.proverb_cat",
+        "correct": "quiz.answer.whose_meat_it_ate",
+        "answers": [
+            "quiz.answer.mice_do_not_know",
+            "quiz.answer.how_much_trouble_costs",
+            "quiz.answer.where_secret_lies",
+            "quiz.answer.whose_meat_it_ate",
+        ],
+    },
+    {
+        "question": "quiz.question.carnivorous_plant",
+        "correct": "quiz.answer.sundew",
+        "answers": [
+            "quiz.answer.bupleurum",
+            "quiz.answer.sundew",
+            "quiz.answer.pedicularis",
+            "quiz.answer.astragalus",
+        ],
+    },
+    {
+        "question": "quiz.question.rooftop_climber",
+        "correct": "quiz.answer.roofer",
+        "answers": [
+            "quiz.answer.digger",
+            "quiz.answer.stalker",
+            "quiz.answer.roofer",
+            "quiz.answer.biker",
+        ],
+    },
+    {
+        "question": "quiz.question.wedding_anniversaries",
+        "correct": "quiz.answer.forty_nine",
+        "answers": [
+            "quiz.answer.eleven",
+            "quiz.answer.nineteen",
+            "quiz.answer.twenty_five",
+            "quiz.answer.forty_nine",
+        ],
     },
 ]
 
