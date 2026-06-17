@@ -26,8 +26,8 @@ docs = [
 ]
 
 [project.scripts]
-main_client = "main_client:cli"
-main_server = "main_server:cli"
+"main.client" = "main_client:cli"
+"main.server" = "main_server:cli"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

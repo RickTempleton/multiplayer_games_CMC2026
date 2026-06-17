@@ -49,10 +49,10 @@ python src/main_server.py
 python src/main_client.py
 ```
 
-После установки доступны entry points:
+После установки доступны точки входа:
 ```bash
-main_server
-main_client
+main.server
+main.client
 ```
 
 ## Автоматизация
