@@ -17,6 +17,7 @@ dev = [
   "babel>=2.15.0",
   "build>=1.2.2",
   "coverage>=7.0.0",
+  "doit>=0.36.0",
   "flake8>=7.0.0",
   "pydocstyle>=6.3.0",
 ]
