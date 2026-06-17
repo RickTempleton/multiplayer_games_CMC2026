@@ -1,4 +1,4 @@
-"""Basic frontend screen for the Quiz game."""
+"""Фронтенд для игры «Викторина»."""
 
 from __future__ import annotations
 
@@ -52,7 +52,7 @@ STATUS_TEXT = {
 
 
 class QuizView(NeonBaseView):
-    """Static visual base for the quiz screen."""
+    """Статистика для визуальной основы викторины."""
 
     def __init__(
         self,
@@ -247,7 +247,7 @@ class QuizView(NeonBaseView):
         self._register_responsive_button(self.back_button)
 
     def on_update(self, _delta_time: float) -> None:
-        """Read minimal quiz statuses from backend."""
+        """Считывает минимальный набор статусов викторины из бэкенда."""
 
         while True:
             status, error = self.manager.pop_status()
@@ -305,7 +305,7 @@ class QuizView(NeonBaseView):
                 return
 
     def on_draw(self) -> None:
-        """Draw the static quiz layout."""
+        """Отрисовка итоговой статистики викторины."""
 
         self.clear()
         self._draw_neon_background()
