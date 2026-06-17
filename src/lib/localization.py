@@ -1,4 +1,4 @@
-"""Runtime gettext/Babel localization helpers for GUI texts."""
+"""Помощники для перевода текстов интерфейса."""
 
 from __future__ import annotations
 
@@ -10,6 +10,33 @@ DEFAULT_LOCALE = "ru"
 SUPPORTED_LOCALES = ("ru", "en")
 DOMAIN = "messages"
 LOCALE_DIR = Path(__file__).resolve().parent / "locale"
+ERROR_TRANSLATION_KEYS = (
+    "error.bad_json",
+    "error.json_message_must_be_dict",
+    "error.unknown_target",
+    "error.unknown_message",
+    "error.bad_nick",
+    "error.leave_lobby_first",
+    "error.first_login",
+    "error.game_not_found",
+    "error.bad_lobby_id",
+    "error.lobby_id_is_busy",
+    "error.no_free_lobby_ids",
+    "error.lobby_not_found",
+    "error.nick_is_busy_in_lobby",
+    "error.lobby_is_full",
+    "error.first_create_or_join_lobby",
+    "error.not_in_this_lobby",
+    "error.lobby_crashed",
+    "error.not_enough_players",
+    "error.game_is_not_started",
+    "error.wrong_turn",
+    "error.wrong_symbol",
+    "error.cell_is_busy",
+    "error.game_run_function_is_not_set",
+    "error.client_is_not_connected",
+    "error.server_unavailable",
+)
 
 _current_locale = DEFAULT_LOCALE
 _catalog_cache: dict[str, gettext.NullTranslations] = {}
@@ -17,13 +44,13 @@ _po_cache: dict[str, dict[str, str]] = {}
 
 
 def get_locale() -> str:
-    """Return the active locale code."""
+    """Вернуть текущий язык интерфейса."""
 
     return _current_locale
 
 
 def set_locale(locale: str) -> None:
-    """Set the active locale."""
+    """Поменять язык интерфейса."""
 
     global _current_locale
 
@@ -34,7 +61,7 @@ def set_locale(locale: str) -> None:
 
 
 def toggle_locale() -> str:
-    """Switch between Russian and English locales."""
+    """Переключить язык между русским и английским."""
 
     next_locale = "en" if _current_locale == "ru" else "ru"
     set_locale(next_locale)
@@ -42,7 +69,7 @@ def toggle_locale() -> str:
 
 
 def tr(message_id: str, **kwargs: object) -> str:
-    """Translate a GUI message id for the active locale."""
+    """Вернуть перевод сообщения по его ключу."""
 
     text = _translate(message_id)
 
@@ -53,7 +80,7 @@ def tr(message_id: str, **kwargs: object) -> str:
 
 
 def tr_error(message: object) -> str:
-    """Translate a server/client error message when a catalog key exists."""
+    """Перевести сообщение об ошибке, если для него есть перевод."""
 
     message_text = str(message or "")
     message_key = "error." + message_text.replace(" ", "_")
@@ -66,7 +93,7 @@ def tr_error(message: object) -> str:
 
 
 def _translate(message_id: str) -> str:
-    """Translate through compiled gettext catalog or source PO fallback."""
+    """Найти перевод сообщения в MO- или PO-файле."""
 
     catalog = _load_catalog(_current_locale)
     text = catalog.gettext(message_id)
@@ -78,7 +105,7 @@ def _translate(message_id: str) -> str:
 
 
 def _load_catalog(locale: str) -> gettext.NullTranslations:
-    """Load compiled gettext catalog for locale."""
+    """Загрузить MO-файл с переводами."""
 
     if locale not in _catalog_cache:
         _catalog_cache[locale] = gettext.translation(
@@ -92,7 +119,7 @@ def _load_catalog(locale: str) -> gettext.NullTranslations:
 
 
 def _load_po_messages(locale: str) -> dict[str, str]:
-    """Load untranslated source PO catalog when MO files are not built yet."""
+    """Загрузить переводы из PO-файла, если MO-файла нет."""
 
     if locale in _po_cache:
         return _po_cache[locale]
@@ -108,7 +135,7 @@ def _load_po_messages(locale: str) -> dict[str, str]:
 
 
 def _parse_po(path: Path) -> dict[str, str]:
-    """Parse the simple Babel-generated PO shape used by this project."""
+    """Прочитать ключи и переводы из PO-файла."""
 
     messages: dict[str, str] = {}
     current_field = None
@@ -153,6 +180,6 @@ def _parse_po(path: Path) -> dict[str, str]:
 
 
 def _po_string_value(value: str) -> str:
-    """Decode a quoted PO string literal."""
+    """Прочитать строку из PO-файла."""
 
     return ast.literal_eval(value)

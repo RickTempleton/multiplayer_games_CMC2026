@@ -1,7 +1,11 @@
+"""Автоматизация задач для переводов, документации и тестов."""
+
 import ast
 import json
+import os
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 
 from doit.task import clean_targets
@@ -31,7 +35,7 @@ TRANSLATION_KEY_PREFIXES = (
 
 
 def project_py_files():
-    """Return project Python files, excluding local environments."""
+    """Найти Python-файлы проекта."""
 
     return [
         path
@@ -41,13 +45,16 @@ def project_py_files():
 
 
 def is_translation_key(value):
-    """Return True when a string literal looks like an interface key."""
+    """Проверить, похожа ли строка на ключ перевода."""
 
-    return value.startswith(TRANSLATION_KEY_PREFIXES)
+    return (
+        value.startswith(TRANSLATION_KEY_PREFIXES)
+        and value not in TRANSLATION_KEY_PREFIXES
+    )
 
 
 def literal_message_ids():
-    """Collect literal translation ids stored outside direct tr(...) calls."""
+    """Собрать ключи переводов из строк в коде."""
 
     keys = set()
 
@@ -66,7 +73,7 @@ def literal_message_ids():
 
 
 def pot_message_ids():
-    """Collect message ids already present in the generated POT file."""
+    """Собрать ключи, которые уже есть в POT-файле."""
 
     if not POT_FILE.exists():
         return set()
@@ -83,13 +90,13 @@ def pot_message_ids():
 
 
 def po_quote(value):
-    """Quote a string for a PO/POT file."""
+    """Подготовить строку для PO/POT-файла."""
 
     return json.dumps(value, ensure_ascii=False)
 
 
 def append_literal_keys_to_pot():
-    """Append literal interface keys that Babel cannot infer semantically."""
+    """Добавить в POT-файл ключи, которые Babel сам не нашёл."""
 
     missing = sorted(literal_message_ids() - pot_message_ids())
 
@@ -104,8 +111,26 @@ def append_literal_keys_to_pot():
             pot.write('msgstr ""\n\n')
 
 
+def touch(path):
+    """Создать файл или обновить время изменения."""
+
+    Path(path).touch()
+
+
+def run_with_src_path(command):
+    """Запустить команду с добавленным src в PYTHONPATH."""
+
+    env = os.environ.copy()
+    current_path = env.get("PYTHONPATH")
+    env["PYTHONPATH"] = (
+        f"src{os.pathsep}{current_path}" if current_path else "src"
+    )
+    return subprocess.run(command, env=env).returncode == 0
+
+
 def task_pot():
-    """Построение переводов."""
+    """Собрать POT-файл."""
+
     py_files = project_py_files()
     return {
         "file_dep": py_files + [Path("babel.cfg")],
@@ -120,7 +145,8 @@ def task_pot():
 
 
 def task_po():
-    """Обновление переводов."""
+    """Обновить PO-файлы."""
+
     return {
         "file_dep": ["src/lib/locale/messages.pot"],
         "actions": [
@@ -141,7 +167,8 @@ def task_po():
 
 
 def task_mo():
-    """Компиляция переводов."""
+    """Собрать MO-файлы."""
+
     po_files = [
         "src/lib/locale/ru/LC_MESSAGES/messages.po",
         "src/lib/locale/en/LC_MESSAGES/messages.po",
@@ -161,9 +188,10 @@ def task_mo():
 
 
 def task_i18n():
-    """Создание i18n."""
+    """Собрать файлы переводов."""
+
     return {
-        "actions": ["touch .i18n"],
+        "actions": [(touch, [".i18n"])],
         "targets": [".i18n"],
         "task_dep": ["pot", "mo"],
         "clean": [clean_targets],
@@ -171,7 +199,8 @@ def task_i18n():
 
 
 def task_html():
-    """Создание html документации."""
+    """Собрать HTML-документацию."""
+
     rstpy = list(Path("docs").glob("**/*.rst")) + project_py_files() + [
         Path("docs/conf.py"),
     ]
@@ -184,7 +213,8 @@ def task_html():
 
 
 def task_test():
-    """Прогон тестов."""
+    """Запустить тесты."""
+
     test_files = list(Path("tests").glob("test_*.py"))
     py_files = list(Path("src").glob("**/*.py"))
     return {
@@ -193,9 +223,22 @@ def task_test():
             "src/lib/locale/en/LC_MESSAGES/messages.mo",
         ] + test_files + py_files,
         "actions": [
-            f"PYTHONPATH=src {PYTHON} -m coverage run -m unittest discover -s tests",
+            (
+                run_with_src_path,
+                [[
+                    PYTHON,
+                    "-m",
+                    "coverage",
+                    "run",
+                    "-m",
+                    "unittest",
+                    "discover",
+                    "-s",
+                    "tests",
+                ]],
+            ),
             f"{PYTHON} -m coverage report",
-            "touch .test",
+            (touch, [".test"]),
         ],
         "targets": [".test"],
         "task_dep": ["i18n"],

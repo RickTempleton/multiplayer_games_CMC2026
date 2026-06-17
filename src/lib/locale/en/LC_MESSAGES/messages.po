@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: multiplayer_games_CMC2026 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 22:00+0300\n"
+"POT-Creation-Date: 2026-06-17 22:15+0300\n"
 "PO-Revision-Date: 2026-06-10 00:00+0300\n"
 "Last-Translator: multiplayer_games_CMC2026 contributors\n"
 "Language: en\n"
@@ -320,113 +320,104 @@ msgid "x_o.winner"
 msgstr "{player} won"
 
 #: key literal translation
-#, fuzzy
-msgid "error."
-msgstr "Invalid player name."
-
-#: key literal translation
-#, fuzzy
 msgid "error.bad_json"
-msgstr "Invalid player name."
+msgstr "Invalid JSON."
 
 #: key literal translation
-#, fuzzy
 msgid "error.bad_lobby_id"
-msgstr "LOBBY ID"
+msgstr "Invalid lobby ID."
 
 #: key literal translation
-#, fuzzy
 msgid "error.bad_nick"
 msgstr "Invalid player name."
 
 #: key literal translation
 msgid "error.cell_is_busy"
-msgstr ""
+msgstr "This cell is occupied."
 
 #: key literal translation
 msgid "error.client_is_not_connected"
-msgstr ""
+msgstr "Client is not connected to the server."
 
 #: key literal translation
 msgid "error.first_create_or_join_lobby"
-msgstr ""
+msgstr "Create or join a lobby first."
 
 #: key literal translation
 msgid "error.first_login"
-msgstr ""
+msgstr "Enter a player name first."
 
 #: key literal translation
 msgid "error.game_is_not_started"
-msgstr ""
+msgstr "Game is not started yet."
 
 #: key literal translation
 msgid "error.game_not_found"
-msgstr ""
+msgstr "Game not found."
 
 #: key literal translation
 msgid "error.game_run_function_is_not_set"
-msgstr ""
+msgstr "Game run function is not set."
 
 #: key literal translation
 msgid "error.json_message_must_be_dict"
-msgstr ""
+msgstr "JSON message must be an object."
 
 #: key literal translation
 msgid "error.leave_lobby_first"
-msgstr ""
+msgstr "Leave the current lobby first."
 
 #: key literal translation
 msgid "error.lobby_crashed"
-msgstr ""
+msgstr "Lobby crashed."
 
 #: key literal translation
 msgid "error.lobby_id_is_busy"
-msgstr ""
+msgstr "This lobby ID is already busy."
 
 #: key literal translation
 msgid "error.lobby_is_full"
-msgstr ""
+msgstr "Lobby is full."
 
 #: key literal translation
 msgid "error.lobby_not_found"
-msgstr ""
+msgstr "Lobby not found."
 
 #: key literal translation
 msgid "error.nick_is_busy_in_lobby"
-msgstr ""
+msgstr "This name is already busy in the lobby."
 
 #: key literal translation
 msgid "error.no_free_lobby_ids"
-msgstr ""
+msgstr "No free lobby IDs are available."
 
 #: key literal translation
 msgid "error.not_enough_players"
-msgstr ""
+msgstr "Not enough players to start."
 
 #: key literal translation
 msgid "error.not_in_this_lobby"
-msgstr ""
+msgstr "You are not in this lobby."
 
 #: key literal translation
-#, fuzzy
 msgid "error.server_unavailable"
-msgstr "SERVER UNAVAILABLE"
+msgstr "Server is unavailable."
 
 #: key literal translation
 msgid "error.unknown_message"
-msgstr ""
+msgstr "Unknown server command."
 
 #: key literal translation
 msgid "error.unknown_target"
-msgstr ""
+msgstr "Unknown message target."
 
 #: key literal translation
 msgid "error.wrong_symbol"
-msgstr ""
+msgstr "Invalid move symbol."
 
 #: key literal translation
 msgid "error.wrong_turn"
-msgstr ""
+msgstr "It is another player's turn."
 
 #: key literal translation
 msgid "game.pong.rules"
@@ -757,4 +748,3 @@ msgstr "waiting"
 #, fuzzy
 msgid "x_o.win"
 msgstr "{player} won"
-
