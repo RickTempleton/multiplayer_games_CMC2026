@@ -10,32 +10,32 @@ DEFAULT_LOCALE = "ru"
 SUPPORTED_LOCALES = ("ru", "en")
 DOMAIN = "messages"
 LOCALE_DIR = Path(__file__).resolve().parent / "locale"
-ERROR_TRANSLATION_KEYS = (
-    "error.bad_json",
-    "error.json_message_must_be_dict",
-    "error.unknown_target",
-    "error.unknown_message",
-    "error.bad_nick",
-    "error.leave_lobby_first",
-    "error.first_login",
-    "error.game_not_found",
-    "error.bad_lobby_id",
-    "error.lobby_id_is_busy",
-    "error.no_free_lobby_ids",
-    "error.lobby_not_found",
-    "error.nick_is_busy_in_lobby",
-    "error.lobby_is_full",
-    "error.first_create_or_join_lobby",
-    "error.not_in_this_lobby",
-    "error.lobby_crashed",
-    "error.not_enough_players",
-    "error.game_is_not_started",
-    "error.wrong_turn",
-    "error.wrong_symbol",
-    "error.cell_is_busy",
-    "error.game_run_function_is_not_set",
-    "error.client_is_not_connected",
-    "error.server_unavailable",
+SERVER_ERROR_MESSAGES = (
+    "bad json",
+    "json message must be dict",
+    "unknown target",
+    "unknown message",
+    "bad nick",
+    "leave lobby first",
+    "first login",
+    "game not found",
+    "bad lobby_id",
+    "lobby id is busy",
+    "no free lobby ids",
+    "lobby not found",
+    "nick is busy in lobby",
+    "lobby is full",
+    "first create or join lobby",
+    "not in this lobby",
+    "lobby crashed",
+    "not enough players",
+    "game is not started",
+    "wrong turn",
+    "wrong symbol",
+    "cell is busy",
+    "game run function is not set",
+    "client is not connected",
+    "server unavailable",
 )
 
 _current_locale = DEFAULT_LOCALE
@@ -83,6 +83,11 @@ def tr_error(message: object) -> str:
     """Перевести сообщение об ошибке, если для него есть перевод."""
 
     message_text = str(message or "")
+    translated = tr(message_text)
+
+    if translated != message_text:
+        return translated
+
     message_key = "error." + message_text.replace(" ", "_")
     translated = tr(message_key)
 

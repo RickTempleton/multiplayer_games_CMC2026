@@ -1,14 +1,10 @@
-# Russian translations for multiplayer_games_CMC2026.
+﻿# Russian translations for multiplayer_games_CMC2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: multiplayer_games_CMC2026 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2026-06-17 23:16+0300\n"
-=======
-"POT-Creation-Date: 2026-06-17 23:21+0300\n"
->>>>>>> f39717c (feat: added doit wheel)
+"POT-Creation-Date: 2026-06-18 09:31+0300\n"
 "PO-Revision-Date: 2026-06-10 00:00+0300\n"
 "Last-Translator: multiplayer_games_CMC2026 contributors\n"
 "Language: ru\n"
@@ -325,104 +321,44 @@ msgid "x_o.winner"
 msgstr "победил {player}"
 
 #: key literal translation
-msgid "error.bad_json"
+msgid "bad json"
 msgstr "Некорректный JSON."
 
 #: key literal translation
-msgid "error.bad_lobby_id"
+msgid "bad lobby_id"
 msgstr "Некорректный ID лобби."
 
 #: key literal translation
-msgid "error.bad_nick"
+msgid "bad nick"
 msgstr "Некорректное имя игрока."
 
 #: key literal translation
-msgid "error.cell_is_busy"
+msgid "cell is busy"
 msgstr "Эта клетка уже занята."
 
 #: key literal translation
-msgid "error.client_is_not_connected"
+msgid "client is not connected"
 msgstr "Клиент не подключён к серверу."
 
 #: key literal translation
-msgid "error.first_create_or_join_lobby"
+msgid "first create or join lobby"
 msgstr "Сначала создайте лобби или подключитесь к нему."
 
 #: key literal translation
-msgid "error.first_login"
+msgid "first login"
 msgstr "Сначала введите имя игрока."
 
 #: key literal translation
-msgid "error.game_is_not_started"
+msgid "game is not started"
 msgstr "Игра ещё не запущена."
 
 #: key literal translation
-msgid "error.game_not_found"
+msgid "game not found"
 msgstr "Игра не найдена."
 
 #: key literal translation
-msgid "error.game_run_function_is_not_set"
+msgid "game run function is not set"
 msgstr "Локальная логика игры не настроена."
-
-#: key literal translation
-msgid "error.json_message_must_be_dict"
-msgstr "Сообщение JSON должно быть объектом."
-
-#: key literal translation
-msgid "error.leave_lobby_first"
-msgstr "Сначала выйдите из текущего лобби."
-
-#: key literal translation
-msgid "error.lobby_crashed"
-msgstr "Лобби аварийно завершилось."
-
-#: key literal translation
-msgid "error.lobby_id_is_busy"
-msgstr "Этот ID лобби уже занят."
-
-#: key literal translation
-msgid "error.lobby_is_full"
-msgstr "Лобби уже заполнено."
-
-#: key literal translation
-msgid "error.lobby_not_found"
-msgstr "Лобби не найдено."
-
-#: key literal translation
-msgid "error.nick_is_busy_in_lobby"
-msgstr "Это имя уже занято в лобби."
-
-#: key literal translation
-msgid "error.no_free_lobby_ids"
-msgstr "Свободных ID лобби больше нет."
-
-#: key literal translation
-msgid "error.not_enough_players"
-msgstr "Недостаточно игроков для старта."
-
-#: key literal translation
-msgid "error.not_in_this_lobby"
-msgstr "Вы не состоите в этом лобби."
-
-#: key literal translation
-msgid "error.server_unavailable"
-msgstr "Сервер недоступен."
-
-#: key literal translation
-msgid "error.unknown_message"
-msgstr "Неизвестная команда сервера."
-
-#: key literal translation
-msgid "error.unknown_target"
-msgstr "Неизвестный адресат сообщения."
-
-#: key literal translation
-msgid "error.wrong_symbol"
-msgstr "Некорректный символ хода."
-
-#: key literal translation
-msgid "error.wrong_turn"
-msgstr "Сейчас ход другого игрока."
 
 #: key literal translation
 msgid "game.pong.rules"
@@ -481,6 +417,30 @@ msgid "game.x_o.title"
 msgstr "Крестики-нолики"
 
 #: key literal translation
+msgid "json message must be dict"
+msgstr "Сообщение JSON должно быть объектом."
+
+#: key literal translation
+msgid "leave lobby first"
+msgstr "Сначала выйдите из текущего лобби."
+
+#: key literal translation
+msgid "lobby crashed"
+msgstr "Лобби аварийно завершилось."
+
+#: key literal translation
+msgid "lobby id is busy"
+msgstr "Этот ID лобби уже занят."
+
+#: key literal translation
+msgid "lobby is full"
+msgstr "Лобби уже заполнено."
+
+#: key literal translation
+msgid "lobby not found"
+msgstr "Лобби не найдено."
+
+#: key literal translation
 msgid "menu.create_lobby"
 msgstr "СОЗДАТЬ ЛОББИ"
 
@@ -493,9 +453,20 @@ msgid "menu.lobbies"
 msgstr "ДОСТУПНЫЕ ЛОББИ"
 
 #: key literal translation
-#, fuzzy
-msgid "pong.jpg"
-msgstr "Левая ракетка: W/S. Правая ракетка: стрелки вверх/вниз."
+msgid "nick is busy in lobby"
+msgstr "Это имя уже занято в лобби."
+
+#: key literal translation
+msgid "no free lobby ids"
+msgstr "Свободных ID лобби больше нет."
+
+#: key literal translation
+msgid "not enough players"
+msgstr "Недостаточно игроков для старта."
+
+#: key literal translation
+msgid "not in this lobby"
+msgstr "Вы не состоите в этом лобби."
 
 #: key literal translation
 msgid "quiz.answer"
@@ -646,11 +617,6 @@ msgid "quiz.joined"
 msgstr "Игрок подключился. Нажмите СТАРТ."
 
 #: key literal translation
-#, fuzzy
-msgid "quiz.jpg"
-msgstr "Игрок подключился. Нажмите СТАРТ."
-
-#: key literal translation
 msgid "quiz.leave"
 msgstr "Соперник покинул игру"
 
@@ -697,62 +663,66 @@ msgid "quiz.waiting"
 msgstr "Ожидание подключения игрока"
 
 #: key literal translation
-#, fuzzy
-msgid "snake.png"
-msgstr "Левая змейка: WASD. Правая змейка: стрелки. Игра до 5 очков."
+msgid "server unavailable"
+msgstr "Сервер недоступен."
 
 #: key literal translation
-#, fuzzy
+msgid "unknown message"
+msgstr "Неизвестная команда сервера."
+
+#: key literal translation
+msgid "unknown target"
+msgstr "Неизвестный адресат сообщения."
+
+#: key literal translation
+msgid "wrong symbol"
+msgstr "Некорректный символ хода."
+
+#: key literal translation
+msgid "wrong turn"
+msgstr "Сейчас ход другого игрока."
+
+#: key literal translation
 msgid "x_o.bad_move"
-msgstr "В МЕНЮ"
+msgstr "Некорректный ход"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.busy"
-msgstr "Лобби: {players}"
+msgstr "Клетка занята"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.draw"
-msgstr "ничья"
+msgstr "Ничья"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.idle"
-msgstr "победил {player}"
+msgstr "Ожидание старта"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.joined"
-msgstr "победил {player}"
+msgstr "Игрок подключился"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.leave"
-msgstr "ИГРОК"
+msgstr "Игрок вышел"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.move"
-msgstr "вы"
+msgstr "Ход отправлен"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.not_your_turn"
-msgstr "ХОД"
+msgstr "Сейчас ход другого игрока"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.start"
-msgstr "СТАРТ"
+msgstr "Игра началась"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.waiting"
-msgstr "ожидание"
+msgstr "Ожидание второго игрока"
 
 #: key literal translation
-#, fuzzy
 msgid "x_o.win"
-msgstr "победил {player}"
+msgstr "Победа"
 

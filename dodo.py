@@ -35,8 +35,9 @@ TRANSLATION_KEY_PREFIXES = (
     "snake.",
     "quiz.",
     "x_o.",
-    "error.",
 )
+EXTRA_MESSAGE_ID_NAMES = {"SERVER_ERROR_MESSAGES"}
+IGNORED_LITERAL_SUFFIXES = (".jpg", ".jpeg", ".png", ".gif", ".svg")
 
 
 def project_py_files():
@@ -55,6 +56,34 @@ def is_translation_key(value):
     return (
         value.startswith(TRANSLATION_KEY_PREFIXES)
         and value not in TRANSLATION_KEY_PREFIXES
+        and not value.lower().endswith(IGNORED_LITERAL_SUFFIXES)
+    )
+
+
+def string_constants(node):
+    """Собрать строковые константы внутри узла AST."""
+
+    return {
+        child.value
+        for child in ast.walk(node)
+        if isinstance(child, ast.Constant) and isinstance(child.value, str)
+    }
+
+
+def is_extra_message_id_assignment(node):
+    """Проверить, содержит ли присваивание дополнительные msgid."""
+
+    if isinstance(node, ast.Assign):
+        targets = node.targets
+    elif isinstance(node, ast.AnnAssign):
+        targets = [node.target]
+    else:
+        return False
+
+    return any(
+        isinstance(target, ast.Name)
+        and target.id in EXTRA_MESSAGE_ID_NAMES
+        for target in targets
     )
 
 
@@ -70,6 +99,10 @@ def literal_message_ids():
             continue
 
         for node in ast.walk(tree):
+            if is_extra_message_id_assignment(node):
+                keys.update(string_constants(node.value))
+                continue
+
             if isinstance(node, ast.Constant) and isinstance(node.value, str):
                 if is_translation_key(node.value):
                     keys.add(node.value)
@@ -179,10 +212,12 @@ def task_po():
         "actions": [
             f"{PYTHON} -m babel.messages.frontend update "
             "-D messages -i src/lib/locale/messages.pot "
-            "-d src/lib/locale -l ru --init-missing --ignore-obsolete",
+            "-d src/lib/locale -l ru --init-missing --ignore-obsolete "
+            "--no-fuzzy-matching",
             f"{PYTHON} -m babel.messages.frontend update "
             "-D messages -i src/lib/locale/messages.pot "
-            "-d src/lib/locale -l en --init-missing --ignore-obsolete",
+            "-d src/lib/locale -l en --init-missing --ignore-obsolete "
+            "--no-fuzzy-matching",
         ],
         "targets": [
             "src/lib/locale/ru/LC_MESSAGES/messages.po",
