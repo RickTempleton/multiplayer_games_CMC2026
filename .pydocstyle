@@ -1,3 +1,4 @@
 [pydocstyle]
 convention = google
 add_ignore = D105, D107, D202, D415
+match_dir = (?!\.git|__pycache__|venv|\.venv|new|new_new|new_venvvv|wheel_test|check_venv|venv_games|build).*
